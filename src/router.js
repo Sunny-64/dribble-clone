@@ -7,16 +7,26 @@ import {
 // Custom imports 
 import Layout from './Layout';
 import { GetStarted, Home, Signup } from "./pages";
+import GetStartedProvider from "./context/GetStartedProvider";
 
 
 function ProtectedRoutes({ component: Component, ...props }) {
     // const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const isLoggedIn = false;
+    const isLoggedIn = true;
     if (!isLoggedIn) {
         return <Navigate to={"/signup"} />
     }
     return <Component {...props} />
 }
+
+function GetStartedWithProvider(props) {
+    return (
+        <GetStartedProvider>
+            <GetStarted />
+        </GetStartedProvider>
+    );
+}
+
 
 const router = createBrowserRouter([
     {
@@ -34,7 +44,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/get-started',
-        element: <ProtectedRoutes component={GetStarted}/>
+        element: (<ProtectedRoutes component={GetStartedWithProvider} />)
     }
 ]);
 
