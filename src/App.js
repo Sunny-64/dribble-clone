@@ -1,11 +1,17 @@
-import DemoComponent from "./DemoComponent";
+// Library Imports 
+import {
+  RouterProvider,
+} from "react-router-dom";
 
+// Custom imports
+import AuthProvider from "./context/AuthProvider";
+import router from "./router";
 
 function App() {
   return (
-    <div>
-   <DemoComponent />
-    </div>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   );
 }
 
