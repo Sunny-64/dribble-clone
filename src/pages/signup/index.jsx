@@ -3,12 +3,15 @@ import React from 'react'
 // Library Imports
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useNavigate } from 'react-router-dom'
 
 // Custom imports
 import { designerSvg } from './../../assets'
 import { registerSchema } from '../../validations/schemas'
 
 const Signup = () => {
+
+  const navigate = useNavigate(); 
 
   const {
     control,
@@ -25,7 +28,11 @@ const Signup = () => {
   })
 
   const onSubmit = (e) => {
-      
+      if(!isValid) {
+        return; 
+      }
+      console.log("clicked")
+      navigate('/get-started')
   }
 
   return (
@@ -44,7 +51,7 @@ const Signup = () => {
           <p>Already a member ? <a href="#" className='text-blue-800'>Sign In</a></p>
         </div>
         <div className='w-full flex justify-center  py-8'>
-          <form action="" className='w-[80%] sm:w-[70%] md:max-w-[50%]' onSubmit={handleSubmit(onSubmit)}>
+          <form className='w-[80%] sm:w-[70%] md:max-w-[50%]' onSubmit={handleSubmit(onSubmit)}>
             <p className='text-3xl font-bold mb-8'>Sign up to Dribble</p>
 
             <ul className='text-red-600 list-disc px-4 mb-3'>

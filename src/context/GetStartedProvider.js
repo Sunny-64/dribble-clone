@@ -7,7 +7,7 @@ const initialFormData = {
         location: '',
         purpose: [],
     }, 
-    currPage : 1,
+    currPage : 0,
 }
 
 export const GetStartedContext = createContext(initialFormData);
