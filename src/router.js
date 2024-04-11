@@ -6,7 +6,12 @@ import {
 
 // Custom imports 
 import Layout from './Layout';
-import { GetStarted, Home, Signup } from "./pages";
+import { 
+    GetStarted, 
+    Home, 
+    Signup, 
+    VerifyEmail 
+} from "./pages";
 import GetStartedProvider from "./context/GetStartedProvider";
 
 
@@ -22,7 +27,7 @@ function ProtectedRoutes({ component: Component, ...props }) {
 function GetStartedWithProvider(props) {
     return (
         <GetStartedProvider>
-            <GetStarted />
+            <GetStarted {...props} />
         </GetStartedProvider>
     );
 }
@@ -36,6 +41,10 @@ const router = createBrowserRouter([
                 path: '/',
                 element: <Home />
             },
+            {
+                path : '/verify-email', 
+                element : <VerifyEmail />
+            }
         ]
     },
     {

@@ -14,7 +14,9 @@ const Layout = () => {
     return (
         <>
             <Header />
+            <div className='min-h-[400px]'>
             <Outlet />
+            </div>
             <Footer />
         </>
     )

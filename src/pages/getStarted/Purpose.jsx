@@ -29,11 +29,11 @@ const Purpose = ({ data }) => {
   const handleFinishProcess = () => {
     const selectedPurposes = purposes.filter(item => item?.isSelected); 
     setFormData(prev => ({...prev, userDetails : {...prev.userDetails, purposes : [...selectedPurposes]}})); 
-    navigate("/"); 
+    navigate("/verify-email"); 
   }
 
   return (
-    <div className='w-2/3 mx-auto text-center'>
+    <div className='w-2/3 md:w-[80%] lg:w-2/3 mx-auto text-center py-10'>
       <p className='text-4xl font-bold mb-5'>{data?.title}</p>
       <p className='text-gray-600'>{data?.description}</p>
       <div className='md:grid grid-cols-3 my-14 gap-4 tracking-tight'>
@@ -41,7 +41,7 @@ const Purpose = ({ data }) => {
           <div
             key={item.id}
             onClick={() => handlePurposeClick(item.id)}
-            className={`border-[2px] ${item.isSelected ? 'border-pink' : 'border-gray-300'} rounded-xl flex justify-center flex-col items-center p-5`}
+            className={`my-4 border-[2px] ${item.isSelected ? 'border-pink' : 'border-gray-300'} rounded-xl flex justify-center flex-col items-center p-5`}
           >
             <img className='w-36 mb-4' src={item.img} alt="img" />
             <p className='text-xl font-bold'>{item.purpose}</p>

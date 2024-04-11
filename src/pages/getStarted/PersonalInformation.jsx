@@ -21,7 +21,7 @@ const PersonalInformation = ({ data }) => {
     }
 
     return (
-        <div className='w-1/2 mx-auto'>
+        <div className='lg:w-1/2 md:w-2/3 mx-auto px-5'>
             <p className='text-4xl font-bold mb-5'>{data?.title}</p>
             <p className='text-gray-600'>{data?.description}</p>
             <div className='mt-10'>
