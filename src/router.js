@@ -1,27 +1,29 @@
+import { useContext, useEffect } from "react";
 // Library imports
-import {
-    createBrowserRouter,
-    Navigate
-} from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
-// Custom imports 
-import Layout from './Layout';
-import { 
-    GetStarted, 
-    Home, 
-    Signup, 
-    VerifyEmail 
-} from "./pages";
+// Custom imports
+import Layout from "./Layout";
+import { GetStarted, Home, Signup, VerifyEmail } from "./pages";
 import GetStartedProvider from "./context/GetStartedProvider";
+import UserProvider from "./context/UserProvider";
+import { AuthContext } from "./context/AuthProvider";
 
-
-function ProtectedRoutes({ component: Component, ...props }) {
-    // const isLoggedIn = sessionStorage.getItem("isLoggedIn");
-    const isLoggedIn = true;
-    if (!isLoggedIn) {
-        return <Navigate to={"/signup"} />
+function TokenRequiredRoutes({ component: Component, ...props }) {
+    const { authData } = useContext(AuthContext);
+    if (!authData.isLoggedIn) {
+        return <Navigate to={"/signup"} />;
     }
-    return <Component {...props} />
+    return <Component {...props} />;
+}
+
+function UserProviderRoutes({ component: Component, ...props }) {
+
+    return (
+        <UserProvider>
+            <Component {...props} />
+        </UserProvider>
+    );
 }
 
 function GetStartedWithProvider(props) {
@@ -32,29 +34,35 @@ function GetStartedWithProvider(props) {
     );
 }
 
-
 const router = createBrowserRouter([
     {
-        element: <ProtectedRoutes component={Layout} />,
+        path: "/signup",
+        element: localStorage.getItem("isLoggedIn") ? (
+            <Navigate to="/" />
+        ) : (
+            <Signup />
+        ),
+    },
+
+    {
+        path: "/get-started",
+        element: <TokenRequiredRoutes component={GetStartedWithProvider}/>,
+    },
+
+    {
+        element: <Layout />,
+        path: "/",
         children: [
             {
-                path: '/',
-                element: <Home />
+                path: "/",
+                element: <TokenRequiredRoutes component={Home}/>,
             },
             {
-                path : '/verify-email', 
-                element : <VerifyEmail />
-            }
-        ]
+                path: "verify-email",
+                element: <TokenRequiredRoutes component={VerifyEmail}/>,
+            },
+        ],
     },
-    {
-        path: '/signup',
-        element: <Signup />
-    },
-    {
-        path: '/get-started',
-        element: (<ProtectedRoutes component={GetStartedWithProvider} />)
-    }
 ]);
 
-export default router; 
+export default router;

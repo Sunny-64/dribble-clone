@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { FaMagnifyingGlass, FaBriefcase } from "react-icons/fa6";
-import { johnDoe } from '../assets';
+import { defaultUserImg } from '../assets';
+import { UserContext } from '../context/UserProvider';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const navigate = useNavigate(); 
   const [toggleMenu, setToggleMenu] = useState(false); 
-  console.log(toggleMenu)
+  const {userData} = useContext(UserContext); 
+
   return (
     <header className="py-4 px-6 flex justify-between items-center relative shadow-md">
       <div className="flex items-center gap-2">
@@ -37,8 +41,8 @@ const Header = () => {
         <div>
         <FaBriefcase className='text-gray-500 cursor-pointer' size={22} />
         </div>
-          <div className='h-10 w-10 rounded-full object-cover border-[1px] cursor-pointer'>
-              <img src={johnDoe} className='object-cover h-10 w-10 rounded-full' alt="john-doe" />
+          <div className='h-10 w-10 rounded-full object-cover border-[1px] cursor-pointer' onClick={() => navigate('/get-started')}>
+              <img src={userData?.avatar ?? defaultUserImg} className='object-cover h-10 w-10 rounded-full' alt="john-doe" />
           </div>
         <button className="hidden lg:block bg-pink text-white px-4 py-2 rounded-md ">Upload</button>
       </div>

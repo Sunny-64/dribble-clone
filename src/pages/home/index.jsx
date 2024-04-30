@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useContext, useEffect } from "react";
+import { UserContext } from "../../context/UserProvider";
 
 const Home = () => {
-  return (
-    <div className='flex h-[500px] items-center justify-center text-3xl font-bold text-center'>Welcome to dribble!</div>
-  )
-}
+    const { userData } = useContext(UserContext);
 
-export default Home
+    return (
+        <div className="flex h-[500px] items-center justify-center text-3xl font-bold text-center">
+            Welcome to dribble {userData?.username || ''}!!
+        </div>
+    );
+};
+
+export default Home;

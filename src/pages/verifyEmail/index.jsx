@@ -1,18 +1,78 @@
-import React from 'react'
+import React, { useContext, useState } from "react";
 import { FaEnvelopeCircleCheck } from "react-icons/fa6";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { AuthContext } from "../../context/AuthProvider";
+import { resendEmailVerificationMail } from "../../services/ApiService";
 
 const VerifyEmail = () => {
-  return (
-    <div className='text-gray-500 flex items-center justify-center flex-col my-20 p-5'>
-        <p className='font-medium text-black text-3xl'>Please verify your email...</p>
-        <FaEnvelopeCircleCheck size={100}/>
-        <p className='mb-3'>Please verify your email address. We've sent a confirmation email to :</p>
-        <p className='font-bold text-black mb-3'>account@refero.design</p>
-        <p className='mb-2'>Click the confirmation link in that email to begin using Dribble.</p>
-        <p className='mb-2 text-center'>Didn't receive the email? Check your Spam folder. It may have been caught by a filter. If you still don't see it. you can <a href="" className='text-pink'>resend the confirmation email.</a></p>
-        <p>Wrong email address ? <a className='text-pink' href="#">Change it</a></p>
-    </div>
-  )
-}
+    const { authData } = useContext(AuthContext);
+    const [disableResendEmail, setDisableResendEmail] = useState(false);
 
-export default VerifyEmail
+    const handleResendEmail = async () => {
+        setDisableResendEmail(true);
+        setTimeout(() => {
+            setDisableResendEmail(false);
+        }, 1000 * 60);
+
+        if (disableResendEmail) {
+            return;
+        }
+        try {
+            const res = await resendEmailVerificationMail(authData?.token);
+            if (res.status === 200) {
+                toast.success("Email sent!!!");
+            }
+        } catch (err) {
+            console.log(err);
+            toast.error(err);
+        }
+    };
+    return (
+        <>
+            <ToastContainer />
+            <div className="text-gray-500 flex items-center justify-center flex-col my-20 p-5">
+                <p className="font-medium text-black text-3xl text-center">
+                    Please verify your email...
+                </p>
+                <FaEnvelopeCircleCheck size={100} className="text-center" />
+                <p className="mb-3 text-center">
+                    Please verify your email address. We've sent a confirmation
+                    email to :
+                </p>
+                <p className="font-bold text-black mb-3 text-center">
+                    account@refero.design
+                </p>
+                <p className="mb-2 text-center">
+                    Click the confirmation link in that email to begin using
+                    Dribble.
+                </p>
+                <p className="mb-2 text-center">
+                    Didn't receive the email? Check your Spam folder. It may
+                    have been caught by a filter. If you still don't see it. you
+                    can{" "}
+                    <a
+                        href="#"
+                        onClick={handleResendEmail}
+                        className={`${
+                            disableResendEmail
+                                ? "text-gray-400"
+                                : "text-pink cursor-pointer"
+                        }`}
+                    >
+                        resend the confirmation email.
+                    </a>
+                </p>
+                <p className="text-center">
+                    Wrong email address ?{" "}
+                    <a className="text-pink" href="#">
+                        Change it
+                    </a>
+                </p>
+            </div>
+        </>
+    );
+};
+
+export default VerifyEmail;
