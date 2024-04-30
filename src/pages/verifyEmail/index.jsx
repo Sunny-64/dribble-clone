@@ -5,11 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { AuthContext } from "../../context/AuthProvider";
 import { resendEmailVerificationMail } from "../../services/ApiService";
+import { UserContext } from "../../context/UserProvider";
 
 const VerifyEmail = () => {
     const { authData } = useContext(AuthContext);
     const [disableResendEmail, setDisableResendEmail] = useState(false);
-
+    const {userData} = useContext(UserContext); 
     const handleResendEmail = async () => {
         setDisableResendEmail(true);
         setTimeout(() => {
@@ -42,7 +43,7 @@ const VerifyEmail = () => {
                     email to :
                 </p>
                 <p className="font-bold text-black mb-3 text-center">
-                    account@refero.design
+                    {userData?.email}
                 </p>
                 <p className="mb-2 text-center">
                     Click the confirmation link in that email to begin using
