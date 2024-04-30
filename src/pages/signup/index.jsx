@@ -19,6 +19,7 @@ const Signup = () => {
     const navigate = useNavigate();
     const { setAuthData } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
+    const [isChecked, setIsChecked] = useState(false); 
 
     const {
         control,
@@ -39,6 +40,10 @@ const Signup = () => {
     const onSubmit = async (data) => {
         if (!isValid) {
             return;
+        }
+        if(!isChecked){
+            toast.error("please agree to terms and conditions"); 
+            return; 
         }
         try {
             setLoading(true);
@@ -157,7 +162,7 @@ const Signup = () => {
                                             <input
                                                 type="text"
                                                 placeholder="john"
-                                                className="bg-gray-100 py-2 px-3 rounded-md"
+                                                className={`bg-gray-100 py-2 px-3 rounded-md ${errors?.name && 'border-[1px] border-red-600'}`}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
                                                 value={value}
@@ -182,7 +187,7 @@ const Signup = () => {
                                             <input
                                                 type="text"
                                                 placeholder="john"
-                                                className="bg-gray-100 py-2 px-3 rounded-md"
+                                                className={`bg-gray-100 py-2 px-3 rounded-md ${errors?.username && 'border-[1px] border-red-600'}`}
                                                 onChange={onChange}
                                                 onBlur={onBlur}
                                                 value={value}
@@ -205,7 +210,7 @@ const Signup = () => {
                                         <input
                                             type="text"
                                             placeholder="example@gmail.com"
-                                            className="bg-gray-100 py-2 px-3 rounded-md"
+                                            className={`bg-gray-100 py-2 px-3 rounded-md ${errors?.email && 'border-[1px] border-red-600'}`}
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             value={value}
@@ -229,7 +234,7 @@ const Signup = () => {
                                             name="password"
                                             id="password"
                                             placeholder="6+ characters"
-                                            className="bg-gray-100 py-2 px-3 rounded-md"
+                                            className={`bg-gray-100 py-2 px-3 rounded-md ${errors?.password && 'border-[1px] border-red-600'}`}
                                             onChange={onChange}
                                             onBlur={onBlur}
                                             value={value}
@@ -244,6 +249,7 @@ const Signup = () => {
                                     name=""
                                     id=""
                                     className="w-10 h-7"
+                                    onChange={() => setIsChecked(!isChecked)}
                                 />
                                 <p className="text-gray-600 text-normal">
                                     Creating an account means you're okay with

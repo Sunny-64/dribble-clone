@@ -27,7 +27,7 @@ const PersonalInformation = ({ data }) => {
                 <div className='flex gap-8'>
                     <label htmlFor='file-upload' className={`w-36 h-36 ${(!formData?.userDetails?.avatar &&!userData?.avatar) && 'border-[4px] border-gray-300 border-dotted'}  rounded-full flex justify-center items-center`}>
                         
-                        <FaCamera className={`${formData?.userDetails?.avatar || userData?.avatar && 'hidden'} text-gray-400`} size={22} />
+                        <FaCamera className={`${!formData?.userDetails?.avatar && !userData?.avatar ? 'text-gray-400' : 'hidden'}`} size={22} />
 
                         <img 
                         className={`w-36 h-36 rounded-full object-cover ${(!formData?.userDetails?.avatar && !userData?.avatar) && 'hidden'}`} 

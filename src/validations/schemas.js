@@ -18,5 +18,7 @@ export const registerSchema = yup.object({
       .matches(/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,4}$/, 'Invalid Email'),
 
     password: yup.string()
-      .required(),
+      .required()
+      .min(6)
+      .matches(/^(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter and one numeric character'),
   }).required();
