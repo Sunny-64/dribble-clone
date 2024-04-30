@@ -17,20 +17,13 @@ function TokenRequiredRoutes({ component: Component, ...props }) {
     return <Component {...props} />;
 }
 
-function UserProviderRoutes({ component: Component, ...props }) {
-
+function GetStartedWithProviders(props) {
     return (
         <UserProvider>
-            <Component {...props} />
+            <GetStartedProvider>
+                <GetStarted {...props} />
+            </GetStartedProvider>
         </UserProvider>
-    );
-}
-
-function GetStartedWithProvider(props) {
-    return (
-        <GetStartedProvider>
-            <GetStarted {...props} />
-        </GetStartedProvider>
     );
 }
 
@@ -46,7 +39,7 @@ const router = createBrowserRouter([
 
     {
         path: "/get-started",
-        element: <TokenRequiredRoutes component={GetStartedWithProvider}/>,
+        element: <TokenRequiredRoutes component={GetStartedWithProviders} />,
     },
 
     {
@@ -55,11 +48,11 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <TokenRequiredRoutes component={Home}/>,
+                element: <TokenRequiredRoutes component={Home} />,
             },
             {
                 path: "verify-email",
-                element: <TokenRequiredRoutes component={VerifyEmail}/>,
+                element: <TokenRequiredRoutes component={VerifyEmail} />,
             },
         ],
     },

@@ -5,20 +5,32 @@ export const BASE_URL = 'http://localhost:3000/.netlify/functions/app';
 
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000/.netlify/functions/app",
+  baseURL: BASE_URL,
   headers : {
-    'Authorization' : 'Bearer ' + localStorage.getItem('token'), 
     "Content-Type" : 'Application/json'
   }
 });
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export const signUp = (data) => {
   return axiosInstance.post('/auth/sign-up', data);
 }
 
-export const updateUserDetails = (data, token) => {
+export const updateUserDetails = (data) => {
   axiosInstance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-  console.log('Token in the api service : ', axiosInstance.defaults.headers.common['Authorization'])
+  console.log('check purposes : ', data)
   return axiosInstance.put(`/user` ,data);
 }
 

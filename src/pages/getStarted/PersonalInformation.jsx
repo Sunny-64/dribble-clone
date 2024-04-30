@@ -6,18 +6,15 @@ import { FaAngleRight, FaCamera } from "react-icons/fa6";
 
 // Custom imports 
 import { GetStartedContext } from '../../context/GetStartedProvider';
+import { UserContext } from '../../context/UserProvider';
 
 
 const PersonalInformation = ({ data }) => {
     const { formData, setFormData } = useContext(GetStartedContext);
-    const [disableNext, setDisableNext] = useState(true);
-    
+    const {userData} = useContext(UserContext); 
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!formData?.userDetails?.avatar || !formData?.userDetails?.location) {
-            setDisableNext(true);
-            return;
-        }
         setFormData(prev => ({ ...prev, currPage: formData?.currPage + 1 }))
     }
 
@@ -28,10 +25,10 @@ const PersonalInformation = ({ data }) => {
             <div className='mt-10'>
                 <p className='text-xl font-bold mb-4'>Add an Avatar</p>
                 <div className='flex gap-8'>
-                    <label htmlFor='file-upload' className={`w-36 h-36 ${!formData?.userDetails?.avatar && 'border-[4px] border-gray-300 border-dotted'}  rounded-full flex justify-center items-center`}><FaCamera className={`${formData?.userDetails?.avatar && 'hidden'} text-gray-400`} size={22} />
+                    <label htmlFor='file-upload' className={`w-36 h-36 ${!formData?.userDetails?.avatar || !userData?.avatar && 'border-[4px] border-gray-300 border-dotted'}  rounded-full flex justify-center items-center`}><FaCamera className={`${formData?.userDetails?.avatar || userData?.avatar && 'hidden'} text-gray-400`} size={22} />
                         <img 
-                        className={`w-36 h-36 rounded-full object-cover ${formData?.userDetails?.avatar ? URL.createObjectURL(formData?.userDetails?.avatar) : 'hidden'}`} 
-                        src={formData?.userDetails?.avatar ? URL.createObjectURL(formData?.userDetails?.avatar) : ''} 
+                        className={`w-36 h-36 rounded-full object-cover ${formData?.userDetails?.avatar ? URL.createObjectURL(formData?.userDetails?.avatar) : !userData && 'hidden'}`} 
+                        src={formData?.userDetails?.avatar ? URL.createObjectURL(formData?.userDetails?.avatar) : userData?.avatar} 
                         alt="" />
                     </label>
                     <div className='py-6'>
@@ -51,15 +48,16 @@ const PersonalInformation = ({ data }) => {
             <div className='my-10'>
                 <p className="text-xl font-bold mb-4">Add your location</p>
                 <input
+                    // defaultValue={userData?.location ?? formData?.userDetails?.location}
                     onChange={(e) => setFormData(prev => ({ ...prev, userDetails: { ...prev.userDetails, location: e.target.value } }))}
                     value={formData?.userDetails?.location}
                     type="text"
-                    placeholder='Enter a location'
+                    placeholder={userData?.location ?? 'Enter a location'}
                     className='outline-none border-b-[2px] border-gray-200 w-full py-2'
                 />
             </div>
 
-           <button  onClick={handleSubmit} className={`bg-pink py-2 px-16 rounded-md text-white ${!formData?.userDetails?.avatar || !formData?.userDetails?.location && 'opacity-60'}`} disabled={!formData?.userDetails?.avatar || !formData?.userDetails?.location}>Next</button>
+           <button  onClick={handleSubmit} className={`bg-pink py-2 px-16 rounded-md text-white ${!formData?.userDetails?.avatar || !formData?.userDetails?.location && 'opacity-60'}`}>Next</button>
             
         </div>
     )

@@ -9,6 +9,7 @@ import PersonalInformation from './PersonalInformation'
 import Purpose from './Purpose'
 import { GetStartedContext } from '../../context/GetStartedProvider';
 import { GET_STARTED_FORM } from '../../constants';
+import { UserContext } from '../../context/UserProvider';
 
 
 const GetStarted = () => {

@@ -10,22 +10,32 @@ import "react-toastify/dist/ReactToastify.css";
 import { GetStartedContext } from "../../context/GetStartedProvider";
 import { GET_STARTED_FORM_PURPOSE } from "../../constants";
 import { updateUserDetails } from "../../services/ApiService";
-import { AuthContext } from "../../context/AuthProvider";
 import { UserContext } from "../../context/UserProvider";
 
 const Purpose = ({ data }) => {
+    const { userData } = useContext(UserContext);
     const { formData, setFormData } = useContext(GetStartedContext);
     const [purposes, setPurposes] = useState(GET_STARTED_FORM_PURPOSE);
     const [isAnyOptionSelected, setIsAnyOptionSelected] = useState(false);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-    const {authData} = useContext(AuthContext); 
-    const {userData} = useContext(UserContext); 
 
     useEffect(() => {
         const anySelected = purposes.some((item) => item.isSelected);
         setIsAnyOptionSelected(anySelected);
     }, [purposes]);
+
+    useEffect(() => {
+        if (userData?.purposes) {
+            const mappedPurposes = GET_STARTED_FORM_PURPOSE.map((purpose) => ({
+                ...purpose,
+                isSelected: userData?.purposes?.some(
+                    (p) => p.id === purpose.id
+                ),
+            }));
+            setPurposes(mappedPurposes);
+        }
+    }, [userData?.purposes]);
 
     const handlePurposeClick = (itemId) => {
         setPurposes((prevPurposes) =>
@@ -42,25 +52,40 @@ const Purpose = ({ data }) => {
         setLoading(true);
         e.preventDefault();
         const selectedPurposes = purposes.filter((item) => item?.isSelected);
-        console.log('selectedPurposes : ', selectedPurposes)
-        setFormData((prev) => ({
-            ...prev,
-            userDetails: {
-                ...prev.userDetails,
-                purposes: [...selectedPurposes],
-            },
-        }));
+        console.log("selectedPurposes : ", selectedPurposes);
+        // setFormData((prev) => {
+        //     return {
+        //         ...prev,
+        //         userDetails: {
+        //             ...prev.userDetails,
+        //             purposes: selectedPurposes,
+        //         },
+        //     };
+        // });
         try {
             const formDataInterface = new FormData();
-            console.log('purposes from formData : ', formData?.userDetails?.purposes)
+            // console.log(
+            //     "purposes from formData : ",
+            //     formData?.userDetails?.purposes
+            // );
             formDataInterface.append("avatar", formData?.userDetails?.avatar);
-            formDataInterface.append("location", formData?.userDetails?.location);
-            formDataInterface.append("purpose", formData?.userDetails?.purposes);
-            const res = await updateUserDetails(formDataInterface, authData?.token);
-            console.log('update user details api : ', res.data)
-            if (res.status === 200) {
+            formDataInterface.append(
+                "location",
+                formData?.userDetails?.location
+            );
+            formDataInterface.append(
+                "purposes",
+                JSON.stringify(selectedPurposes)
+            );
+            const res = await updateUserDetails(formDataInterface);
+            console.log("update user details api : ", res.data);
+            if (res.status === 200 && !userData?.isEmailVerified) {
                 toast.success("Profile updated successfully.");
+
                 navigate("/verify-email");
+            } else {
+                toast.success("Profile updated successfully.");
+                navigate("/");
             }
         } catch (err) {
             setLoading(false);
@@ -122,7 +147,11 @@ const Purpose = ({ data }) => {
                     )}
                 </button>
                 <p className="mt-3 text-gray-500 text-sm">
-                    <Link to={!userData?.isEmailVerified ? '/verify-email': '/'}>Or press RETURN</Link>
+                    <Link
+                        to={!userData?.isEmailVerified ? "/verify-email" : "/"}
+                    >
+                        Or press RETURN
+                    </Link>
                 </p>
             </form>
         </>

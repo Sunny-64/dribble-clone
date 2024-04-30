@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import { FaMagnifyingGlass, FaBriefcase } from "react-icons/fa6";
 import { defaultUserImg } from '../assets';
@@ -8,8 +8,8 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
   const navigate = useNavigate(); 
   const [toggleMenu, setToggleMenu] = useState(false); 
-  const {userData} = useContext(UserContext); 
-
+  const {userData} = useContext(UserContext);  
+  
   return (
     <header className="py-4 px-6 flex justify-between items-center relative shadow-md">
       <div className="flex items-center gap-2">
