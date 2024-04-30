@@ -42,7 +42,7 @@ const Header = () => {
         <FaBriefcase className='text-gray-500 cursor-pointer' size={22} />
         </div>
           <div className='h-10 w-10 rounded-full object-cover border-[1px] cursor-pointer' onClick={() => navigate('/get-started')}>
-              <img src={userData?.avatar ?? defaultUserImg} className='object-cover h-10 w-10 rounded-full' alt="john-doe" />
+              <img src={userData?.avatar || defaultUserImg} className='object-cover h-10 w-10 rounded-full' alt="john-doe" />
           </div>
         <button className="hidden lg:block bg-pink text-white px-4 py-2 rounded-md ">Upload</button>
       </div>
