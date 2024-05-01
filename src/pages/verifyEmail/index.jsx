@@ -20,14 +20,15 @@ const VerifyEmail = () => {
 
 
     useEffect(() => {
+        if(userData?.isEmailVerified){
+            return navigate('/');
+        }
         let intervalId;
         
         intervalId = setInterval(checkEmailVerified, 20000);
         async function checkEmailVerified () {
             try {
-                console.log('ex')
                 const res = await getUser();
-                console.log('res : ',res.data);
                 if (res.status === 200 && res.data.data.isEmailVerified) {
                     clearInterval(intervalId); // Stop the setInterval when emailVerified is true
                     setUserData(res.data.data);
