@@ -52,22 +52,9 @@ const Purpose = ({ data }) => {
         setLoading(true);
         e.preventDefault();
         const selectedPurposes = purposes.filter((item) => item?.isSelected);
-        console.log("selectedPurposes : ", selectedPurposes);
-        // setFormData((prev) => {
-        //     return {
-        //         ...prev,
-        //         userDetails: {
-        //             ...prev.userDetails,
-        //             purposes: selectedPurposes,
-        //         },
-        //     };
-        // });
+
         try {
             const formDataInterface = new FormData();
-            // console.log(
-            //     "purposes from formData : ",
-            //     formData?.userDetails?.purposes
-            // );
             formDataInterface.append("avatar", formData?.userDetails?.avatar);
             formDataInterface.append(
                 "location",
@@ -78,7 +65,6 @@ const Purpose = ({ data }) => {
                 JSON.stringify(selectedPurposes)
             );
             const res = await updateUserDetails(formDataInterface);
-            console.log("update user details api : ", res.data);
             if (res.status === 200 && !userData?.isEmailVerified) {
                 toast.success("Profile updated successfully.");
 

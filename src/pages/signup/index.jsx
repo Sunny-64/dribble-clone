@@ -81,7 +81,7 @@ const Signup = () => {
                     message: err.response.data.message,
                 });
             } else {
-                console.log("error in signup", err);
+                toast.error(err); 
             }
         }
     };

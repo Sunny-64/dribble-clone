@@ -29,7 +29,6 @@ export const signUp = (data) => {
 
 export const updateUserDetails = (data) => {
   axiosInstance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
-  console.log('check purposes : ', data)
   return axiosInstance.put(`/user` ,data);
 }
 

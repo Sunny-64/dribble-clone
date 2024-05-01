@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaEnvelopeCircleCheck } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,11 +6,18 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../context/AuthProvider";
 import { resendEmailVerificationMail } from "../../services/ApiService";
 import { UserContext } from "../../context/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
+    const navigate = useNavigate(); 
     const { authData } = useContext(AuthContext);
     const [disableResendEmail, setDisableResendEmail] = useState(false);
     const {userData} = useContext(UserContext); 
+    useEffect(() => {
+        if(userData?.isEmailVerified){
+            return navigate('/'); 
+        }
+    }, [])
     const handleResendEmail = async () => {
         setDisableResendEmail(true);
         setTimeout(() => {
@@ -26,7 +33,6 @@ const VerifyEmail = () => {
                 toast.success("Email sent!!!");
             }
         } catch (err) {
-            console.log(err);
             toast.error(err);
         }
     };
