@@ -43,16 +43,16 @@ const router = createBrowserRouter([
     },
 
     {
-        element: <Layout />,
+        element: <TokenRequiredRoutes component={Layout} />,
         path: "/",
         children: [
             {
                 path: "/",
-                element: <TokenRequiredRoutes component={Home} />,
+                element: <Home />,
             },
             {
                 path: "verify-email",
-                element: <TokenRequiredRoutes component={VerifyEmail} />,
+                element: <UserProvider> <VerifyEmail /> </UserProvider>,
             },
         ],
     },

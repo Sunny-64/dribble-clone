@@ -14,7 +14,6 @@ export const UserContext = createContext(intialData);
 
 const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState(intialData);
-    // const [reFetchUserData]
     const navigate = useNavigate(); 
     
     useEffect(() => {

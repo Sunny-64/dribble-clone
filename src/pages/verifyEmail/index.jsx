@@ -4,20 +4,45 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { AuthContext } from "../../context/AuthProvider";
-import { resendEmailVerificationMail } from "../../services/ApiService";
+import {
+    getUser,
+    resendEmailVerificationMail,
+} from "../../services/ApiService";
 import { UserContext } from "../../context/UserProvider";
 import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const { authData } = useContext(AuthContext);
     const [disableResendEmail, setDisableResendEmail] = useState(false);
-    const {userData} = useContext(UserContext); 
+    const { userData, setUserData } = useContext(UserContext);
+
+
+
     useEffect(() => {
-        if(userData?.isEmailVerified){
-            return navigate('/'); 
-        }
-    }, [])
+        let intervalId;
+        
+        intervalId = setInterval(checkEmailVerified, 20000);
+        async function checkEmailVerified () {
+            try {
+                console.log('ex')
+                const res = await getUser();
+                console.log('res : ',res.data);
+                if (res.status === 200 && res.data.data.isEmailVerified) {
+                    clearInterval(intervalId); // Stop the setInterval when emailVerified is true
+                    setUserData(res.data.data);
+                    navigate("/");
+                    return
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        return () => clearInterval(intervalId)
+
+    }, []);
+
     const handleResendEmail = async () => {
         setDisableResendEmail(true);
         setTimeout(() => {

@@ -13,11 +13,11 @@ const Layout = () => {
         <>
             <UserProvider>
                 <Header />
-                <div className="min-h-[400px]">
-                    <Outlet />
-                </div>
-                <Footer />
             </UserProvider>
+            <div className="min-h-[400px]">
+                <Outlet />
+            </div>
+            <Footer />
         </>
     );
 };
