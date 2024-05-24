@@ -1,6 +1,6 @@
 import axios from "axios";
-export const BASE_URL = 'https://dribble-clone-backend.netlify.app/.netlify/functions/app'; 
-// export const BASE_URL = 'http://localhost:3000/.netlify/functions/app'; 
+export const BASE_URL = 'https://dribble-clone-backend.onrender.com'; 
+// export const BASE_URL = 'http://localhost:3000'; 
 
 
 const axiosInstance = axios.create({
