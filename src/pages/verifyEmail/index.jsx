@@ -10,14 +10,16 @@ import {
 } from "../../services/ApiService";
 import { UserContext } from "../../context/UserProvider";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../../context/SocketProvider";
 
 const VerifyEmail = () => {
     const navigate = useNavigate();
     const { authData } = useContext(AuthContext);
     const [disableResendEmail, setDisableResendEmail] = useState(false);
     const { userData, setUserData } = useContext(UserContext);
+    const {emailVerified} = useContext(SocketContext); 
 
-
+    console.log('user data in verify email comp : ', userData)
 
     useEffect(() => {
         if(userData?.isEmailVerified){
@@ -42,7 +44,7 @@ const VerifyEmail = () => {
 
         return () => clearInterval(intervalId)
 
-    }, []);
+    }, [emailVerified]);
 
     const handleResendEmail = async () => {
         setDisableResendEmail(true);
